@@ -4,7 +4,7 @@ namespace TaskMaster;
 
 internal class Menu : ContentPage
 {
-    List<ContentPage> pages = new List<ContentPage>() { new MainPage(), new Valgusfoor(0) };
+    List<ContentPage> pages = new List<ContentPage>() { new MainPage(0), new Valgusfoor(1) };
     List<string> txt = new List<string> { "Home", "Valgusfoor" };
     public Menu() 
     {
