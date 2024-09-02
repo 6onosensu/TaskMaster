@@ -6,33 +6,39 @@ internal class Menu : ContentPage
 {
     List<ContentPage> pages = new List<ContentPage>() { new MainPage(0), new Valgusfoor(1) };
     List<string> txt = new List<string> { "Home", "Valgusfoor" };
+    List<Button> btns = new List<Button>();
     public Menu() 
     {
+        StackLayout stackLayout = new StackLayout
+        {
+            Padding = 20,
+        };
+
         for (int i = 0; i < pages.Count; i++)
         {
             Button btn = new Button
             {
                 Text = txt[i],
-                BackgroundColor = Color.FromRgb(20, 100, 200),
-                TextColor = Color.FromRgb(10, 20, 15),
-                FontFamily = "Hey Comic",
-                BorderWidth = 10,
-                ZIndex = i
+                BackgroundColor = Colors.Blue,
+                TextColor = Colors.White,
+                FontSize = 28,
+                CornerRadius = 5,
+                Margin = 5,
             };
+            btn.BindingContext = i; // stores the index of each btn
+            btns.Add(btn);
             btn.Clicked += Btn_Clicked;
-            Content = new StackLayout
-            {
-                Padding = 20,
-                Children = { btn }
-            };
+
+            stackLayout.Children.Add(btn);
         }
 
-
+        Content = stackLayout;
     }
     private async void Btn_Clicked(object? sender, EventArgs e)
     {
         Button button = (Button)sender;
-        await Navigation.PushAsync(pages[button.ZIndex]);
+        int i = (int)button.BindingContext; //takes index from BindingContent
+        await Navigation.PushAsync(pages[i]);
     }
 }
 
