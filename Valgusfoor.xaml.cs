@@ -37,7 +37,7 @@ public partial class Valgusfoor : ContentPage
         BoxView yellowLight = lights[1];
         BoxView greenLight = lights[2];
 
-        var redTapGestureRecognizer = new TapGestureRecognizer(); //detects tapы
+        var redTapGestureRecognizer = new TapGestureRecognizer(); //detects taps
         redTapGestureRecognizer.Tapped += (s, e) => OnLightTapped("red");
 
         var yellowTapGestureRecognizer = new TapGestureRecognizer();
@@ -57,7 +57,7 @@ public partial class Valgusfoor : ContentPage
             VerticalOptions = LayoutOptions.Center,
             Spacing = 10,
             WidthRequest = 120,
-            HeightRequest = 330,
+            HeightRequest = 340,
             BackgroundColor = Colors.Black,
             Padding = 10,
             Margin = 10,
