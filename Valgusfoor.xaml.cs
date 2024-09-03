@@ -78,7 +78,14 @@ public partial class Valgusfoor : ContentPage
         };
 
         off_btn.Clicked += Off_btn_Clicked;
-    
+
+        Button auto_btn = new Button
+        {
+            Text = "AUTO",
+            Margin = 5,
+        };
+        auto_btn.Clicked += auto_btn_clicked;
+
 
         StackLayout mainL = new StackLayout
         {
@@ -107,6 +114,14 @@ public partial class Valgusfoor : ContentPage
 
         statusLbl.Text = "Press the light";
     }
+
+    private async void auto_btn_clicked(object? sender, EventArgs e)
+    {
+        trafficLight = true;
+
+        //Here must be auto trafficligh!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    }
+    
 
     private void OnLightTapped(string color)
     {
