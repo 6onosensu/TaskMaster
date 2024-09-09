@@ -57,10 +57,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Remove="ColorManagement.xaml" />
 	  <MauiXaml Remove="Valgusfoor.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="ColorManagement.xaml">
+	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+	  </EmbeddedResource>
 	  <EmbeddedResource Include="Valgusfoor.xaml">
 	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 	  </EmbeddedResource>
