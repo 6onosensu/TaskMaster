@@ -58,7 +58,6 @@
 
 	<ItemGroup>
 	  <MauiXaml Remove="ColorManagement.xaml" />
-	  <MauiXaml Remove="TicTacToe.xaml" />
 	  <MauiXaml Remove="Valgusfoor.xaml" />
 	</ItemGroup>
 
@@ -66,7 +65,7 @@
 	  <EmbeddedResource Include="ColorManagement.xaml">
 	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 	  </EmbeddedResource>
-	  <EmbeddedResource Include="TicTacToe\TicTacToe.xaml">
+	  <EmbeddedResource Include="TicTacToe.xaml">
 	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 	  </EmbeddedResource>
 	  <EmbeddedResource Include="Valgusfoor.xaml">

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace TaskMaster;
+﻿namespace TaskMaster;
 public partial class Valgusfoor : ContentPage 
 {
     bool trafficLight = false;
