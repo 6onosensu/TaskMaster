@@ -68,7 +68,7 @@
 
         public void updateGameLabel()
         {
-            gameLbl.Text = 
+            //gameLbl.Text = 
         }
 
         public void gameOn() 
