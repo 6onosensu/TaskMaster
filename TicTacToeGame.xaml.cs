@@ -1,5 +1,5 @@
-﻿namespace TaskMaster;
-public partial class TicTacToe : ContentPage
+namespace TaskMaster;
+public partial class TicTacToeGame : ContentPage
 {
     public readonly int[][] combinations = new int[][]
     {
@@ -20,6 +20,7 @@ public partial class TicTacToe : ContentPage
     Grid board;
     Label mainLbl, gameLbl, resultLbl, lbl;
     Button start_game_btn;
+    Button AlertButton;
     RadioButton r_btn_players, r_btn_player_computer;
 
 
@@ -31,13 +32,12 @@ public partial class TicTacToe : ContentPage
     string currentPlayer;
     string x = "X";
     string o = "O";
+
     Label[,] labels = new Label[3, 3];
 
-
-    Button[,] buttons = new Button[3, 3];
-    public TicTacToe(int k)
+    public TicTacToeGame(int k)
     {
-        InitializeComponent();
+        //InitializeComponent();
 
         mainLbl = new Label
         {
@@ -93,6 +93,7 @@ public partial class TicTacToe : ContentPage
             {
                 lbl = new Label
                 {
+                    Text = "",
                     FontSize = 40,
                     BackgroundColor = Colors.LightGray,
                     FontAttributes = FontAttributes.Bold,
@@ -136,8 +137,8 @@ public partial class TicTacToe : ContentPage
         gameOn();
     }
 
-    public void gameOn() 
-    { 
+    public void gameOn()
+    {
         isGame = true;
         r_btn_players.IsVisible = false;
         r_btn_player_computer.IsVisible = false;
@@ -145,8 +146,8 @@ public partial class TicTacToe : ContentPage
         board.IsVisible = true;
     }
 
-    public void gameOff() 
-    { 
+    public void gameOff()
+    {
         isGame = false;
         r_btn_players.IsVisible = true;
         r_btn_player_computer.IsVisible = true;
@@ -170,10 +171,7 @@ public partial class TicTacToe : ContentPage
 
             if (CheckWinner(playerX))
             {
-                resultLbl.Text = "Player X wins!";
-                resultLbl.IsVisible = true;
-                gameOff();
-                return;
+                TheWinner(x);
             }
         }
         else
@@ -184,20 +182,38 @@ public partial class TicTacToe : ContentPage
 
             if (CheckWinner(playerO))
             {
-                resultLbl.Text = "Player O wins!";
-                resultLbl.IsVisible = true;
-                gameOff();
-                return;
+                TheWinner(o);
             }
         }
 
         if (IsBoardFull())
         {
-            resultLbl.Text = "It's a draw!";
-            resultLbl.IsVisible = true;
-            gameOff();
-            return;
+            ItIsDraw();
         }
+    }
+
+    public void ItIsDraw()
+    {
+        AlertButton = new Button
+        {
+            Text = "It's a draw!",
+        };
+        resultLbl.Text = "It's a draw!";
+        resultLbl.IsVisible = true;
+        gameOff();
+        return;
+    }
+
+    public void TheWinner(string player)
+    {
+        AlertButton = new Button
+        {
+            Text = "Player" + player + "wins!"
+        };
+        resultLbl.Text = "Player" + player + "wins!";
+        resultLbl.IsVisible = true;
+        gameOff();
+        return;
     }
     public void MakeComputerMove()
     {
@@ -215,18 +231,12 @@ public partial class TicTacToe : ContentPage
 
                     if (CheckWinner(playerO))
                     {
-                        resultLbl.Text = "Computer wins!";
-                        resultLbl.IsVisible = true;
-                        gameOff();
-                        return;
+                        TheWinner(o);
                     }
 
                     if (IsBoardFull())
                     {
-                        resultLbl.Text = "It's a draw!";
-                        resultLbl.IsVisible = true;
-                        gameOff();
-                        return;
+                        ItIsDraw();
                     }
 
                     currentPlayer = x;
