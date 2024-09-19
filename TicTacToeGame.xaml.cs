@@ -14,43 +14,42 @@ public partial class TicTacToeGame : ContentPage
         new int[] { 0, 4, 8 }, // top-left to bottom-right
         new int[] { 2, 4, 6 }  // top-right to bottom-left
     };
-    bool isGame = false;
-    bool isPlayerBot = false;
 
     Grid board;
-    Label mainLbl, gameLbl, resultLbl, lbl;
+    Label mainLbl = new Label
+    {
+        Padding = 3,
+        Text = "Tic-Tac-Toe",
+        TextColor = Colors.Blue,
+        FontSize = 30,
+        HorizontalOptions = LayoutOptions.Center,
+        VerticalOptions = LayoutOptions.Start,
+    };
+    Label gameLbl = new Label
+    {
+        Padding = 3,
+        Text = "Let's play!",
+        TextColor = Colors.Black,
+        FontSize = 24,
+        HorizontalOptions = LayoutOptions.Center,
+        VerticalOptions = LayoutOptions.Center,
+    };
+    Label resultLbl, lbl;
     Button start_game_btn;
-    Button AlertButton;
-    RadioButton r_btn_players, r_btn_player_computer;
-
-
-    string xMove = "Player X, your move:";
-    string oMove = "Player O, your move:";
+    RadioButton r_btn_players, r_btn_computer;
 
     List<int> playerX = new List<int>();
     List<int> playerO = new List<int>();
-    string currentPlayer;
+    bool isGame = false;
     string x = "X";
     string o = "O";
+    string currentPlayer;
+    string lblNextPlayer = "";
 
     Label[,] labels = new Label[3, 3];
-
     public TicTacToeGame(int k)
     {
-        //InitializeComponent();
-
-        mainLbl = new Label
-        {
-            Text = "Tic-Tac-Toe",
-            TextColor = Colors.Red,
-            FontSize = 30,
-        };
-        gameLbl = new Label
-        {
-            Text = "Let's play!",
-            TextColor = Colors.Black,
-            FontSize = 24,
-        };
+        
 
         r_btn_players = new RadioButton
         {
@@ -58,35 +57,66 @@ public partial class TicTacToeGame : ContentPage
             Content = "Player vs Player",
             Value = "players",
             IsChecked = true,
+            HorizontalOptions = LayoutOptions.Start,
+            VerticalOptions = LayoutOptions.Center
         };
-        r_btn_player_computer = new RadioButton
+        r_btn_computer = new RadioButton
         {
             Content = "Player vs Computer",
             Value = "computer",
             IsVisible = true,
+            HorizontalOptions = LayoutOptions.Start,
+            VerticalOptions = LayoutOptions.Center
         };
 
         start_game_btn = new Button
         {
             Text = "Start Game",
             TextColor = Colors.White,
-            BackgroundColor = Colors.Red,
+            BackgroundColor = Colors.Blue,
             FontSize = 26,
             FontAttributes = FontAttributes.Bold,
             CornerRadius = 3,
-            WidthRequest = 100,
-            HeightRequest = 40,
+            WidthRequest = 140,
+            HeightRequest = 70,
             IsVisible = true,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.End
         };
         start_game_btn.Clicked += start_game_clicked;
 
-        board = new Grid();
+        Content = new StackLayout
+        {
+            Children =
+            {
+                mainLbl,
+                gameLbl,
+                r_btn_players,
+                r_btn_computer,
+                start_game_btn,
+            }
+        };
+    }
+    void UpdateNextPlayerLbl()
+    {
+        lblNextPlayer = $"Player {currentPlayer}, your move:";
+    }
+
+    
+
+    void DrawBoard()
+    {
+        board = new Grid
+        {
+            BackgroundColor = Colors.LightGray,
+            Padding = 3,
+            
+        };
         for (int i = 0; i < 3; i++)
         {
             board.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
             board.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         }
-
         for (int row = 0; row < 3; row++)
         {
             for (int col = 0; col < 3; col++)
@@ -110,30 +140,23 @@ public partial class TicTacToeGame : ContentPage
             }
         }
 
-        board.IsVisible = false;
-
         Content = new StackLayout
         {
             Children =
             {
-                mainLbl,
-                gameLbl,
-                r_btn_players,
-                r_btn_player_computer,
-                start_game_btn,
                 board,
-                resultLbl,
             }
         };
     }
 
     public void start_game_clicked(object? sender, EventArgs e)
     {
-        isPlayerBot = r_btn_player_computer.IsChecked == true;
         currentPlayer = x;
+        UpdateNextPlayerLbl();
         playerX.Clear();
         playerO.Clear();
-        gameLbl.Text = xMove;
+        DrawBoard();
+        gameLbl.Text = lblNextPlayer;
         gameOn();
     }
 
@@ -141,18 +164,16 @@ public partial class TicTacToeGame : ContentPage
     {
         isGame = true;
         r_btn_players.IsVisible = false;
-        r_btn_player_computer.IsVisible = false;
+        r_btn_computer.IsVisible = false;
         start_game_btn.IsVisible = false;
-        board.IsVisible = true;
     }
 
     public void gameOff()
     {
         isGame = false;
         r_btn_players.IsVisible = true;
-        r_btn_player_computer.IsVisible = true;
+        r_btn_computer.IsVisible = true;
         start_game_btn.IsVisible = true;
-        board.IsVisible = false;
     }
     public void OnGridTapped(object sender, EventArgs e)
     {
@@ -168,6 +189,7 @@ public partial class TicTacToeGame : ContentPage
             playerX.Add(zIndex);
             label.Text = x;
             label.BackgroundColor = Colors.LightBlue;
+            currentPlayer = o;
 
             if (CheckWinner(playerX))
             {
@@ -179,6 +201,7 @@ public partial class TicTacToeGame : ContentPage
             playerO.Add(zIndex);
             label.Text = o;
             label.BackgroundColor = Colors.LightPink;
+            currentPlayer = x;
 
             if (CheckWinner(playerO))
             {
@@ -189,61 +212,6 @@ public partial class TicTacToeGame : ContentPage
         if (IsBoardFull())
         {
             ItIsDraw();
-        }
-    }
-
-    public void ItIsDraw()
-    {
-        AlertButton = new Button
-        {
-            Text = "It's a draw!",
-        };
-        resultLbl.Text = "It's a draw!";
-        resultLbl.IsVisible = true;
-        gameOff();
-        return;
-    }
-
-    public void TheWinner(string player)
-    {
-        AlertButton = new Button
-        {
-            Text = "Player" + player + "wins!"
-        };
-        resultLbl.Text = "Player" + player + "wins!";
-        resultLbl.IsVisible = true;
-        gameOff();
-        return;
-    }
-    public void MakeComputerMove()
-    {
-        var availablePositions = Enumerable.Range(0, 9).Except(playerX).Except(playerO).ToList();
-        if (availablePositions.Count > 0)
-        {
-            int position = availablePositions.First();
-            foreach (var label in labels)
-            {
-                if (label.ZIndex == position)
-                {
-                    playerO.Add(position);
-                    label.Text = o;
-                    label.BackgroundColor = Colors.LightPink;
-
-                    if (CheckWinner(playerO))
-                    {
-                        TheWinner(o);
-                    }
-
-                    if (IsBoardFull())
-                    {
-                        ItIsDraw();
-                    }
-
-                    currentPlayer = x;
-                    gameLbl.Text = "Player X, your move:";
-                    break;
-                }
-            }
         }
     }
     public bool CheckWinner(List<int> playerMoves)
@@ -259,6 +227,50 @@ public partial class TicTacToeGame : ContentPage
     }
     public bool IsBoardFull()
     {
+        ItIsDraw();
         return playerX.Count + playerO.Count == 9;
     }
+    private async void ItIsDraw()
+    {
+        await DisplayAlert("It is a draw!", "Try again.", "OK");
+        gameOff();
+    }
+
+    private void TheWinner(string player)
+    {
+        DisplayAlert($"Congratulations, {player}!", "You win!!!", "OK");
+        gameOff();
+    }
 }
+
+/*public void MakeComputerMove()
+{
+    var availablePositions = Enumerable.Range(0, 9).Except(playerX).Except(playerO).ToList();
+    if (availablePositions.Count > 0)
+    {
+        int position = availablePositions.First();
+        foreach (var label in labels)
+        {
+            if (label.ZIndex == position)
+            {
+                playerO.Add(position);
+                label.Text = o;
+                label.BackgroundColor = Colors.LightPink;
+
+                if (CheckWinner(playerO))
+                {
+                    TheWinner(o);
+                }
+
+                if (IsBoardFull())
+                {
+                    ItIsDraw();
+                }
+
+                currentPlayer = x;
+                gameLbl.Text = lblNextPlayer;
+                break;
+            }
+        }
+    }
+}*/
