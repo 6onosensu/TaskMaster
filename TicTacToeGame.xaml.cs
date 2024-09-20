@@ -1,3 +1,5 @@
+using System.Xml.Serialization;
+
 namespace TaskMaster;
 public partial class TicTacToeGame : ContentPage
 {
@@ -6,35 +8,15 @@ public partial class TicTacToeGame : ContentPage
         new int[] { 0, 1, 2 }, // top row
         new int[] { 3, 4, 5 }, // middle row
         new int[] { 6, 7, 8 }, // bottom row
-
         new int[] { 0, 3, 6 }, // left column
         new int[] { 1, 4, 7 }, // middle column
         new int[] { 2, 5, 8 }, // right column
-
         new int[] { 0, 4, 8 }, // top-left to bottom-right
         new int[] { 2, 4, 6 }  // top-right to bottom-left
     };
 
     Grid board;
-    Label mainLbl = new Label
-    {
-        Padding = 3,
-        Text = "Tic-Tac-Toe",
-        TextColor = Colors.Blue,
-        FontSize = 30,
-        HorizontalOptions = LayoutOptions.Center,
-        VerticalOptions = LayoutOptions.Start,
-    };
-    Label gameLbl = new Label
-    {
-        Padding = 3,
-        Text = "Let's play!",
-        TextColor = Colors.Black,
-        FontSize = 24,
-        HorizontalOptions = LayoutOptions.Center,
-        VerticalOptions = LayoutOptions.Center,
-    };
-    Label resultLbl, lbl;
+    Label lbl, gameLbl, mainLbl;
     Button start_game_btn;
     RadioButton r_btn_players, r_btn_computer;
 
@@ -49,7 +31,24 @@ public partial class TicTacToeGame : ContentPage
     Label[,] labels = new Label[3, 3];
     public TicTacToeGame(int k)
     {
-        
+        mainLbl = new Label
+        {
+            Padding = 3,
+            Text = "Tic-Tac-Toe",
+            TextColor = Colors.Blue,
+            FontSize = 30,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Start,
+        };
+        gameLbl = new Label
+        {
+            Padding = 3,
+            Text = "Let's play!",
+            TextColor = Colors.Black,
+            FontSize = 24,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+        };
 
         r_btn_players = new RadioButton
         {
@@ -102,8 +101,6 @@ public partial class TicTacToeGame : ContentPage
         lblNextPlayer = $"Player {currentPlayer}, your move:";
     }
 
-    
-
     void DrawBoard()
     {
         board = new Grid
@@ -148,6 +145,7 @@ public partial class TicTacToeGame : ContentPage
             }
         };
     }
+
 
     public void start_game_clicked(object? sender, EventArgs e)
     {
@@ -227,7 +225,6 @@ public partial class TicTacToeGame : ContentPage
     }
     public bool IsBoardFull()
     {
-        ItIsDraw();
         return playerX.Count + playerO.Count == 9;
     }
     private async void ItIsDraw()
